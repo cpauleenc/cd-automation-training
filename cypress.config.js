@@ -5,8 +5,8 @@ module.exports = defineConfig({
     // setupNodeEvents(on, config) {
     //   // implement node event listeners here
     // },
-    projectId: "mdguaa",
-    baseUrl: "https://dev-api.kumuapi.com",
+    projectId: "",
+    baseUrl: "",
     specPattern: "**/*.cy.js",
     env: {
       PREFLIGHT_API_KEY:
