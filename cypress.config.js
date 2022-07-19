@@ -6,7 +6,6 @@ module.exports = defineConfig({
     //   // implement node event listeners here
     // },
     projectId: "",
-    baseUrl: "",
     specPattern: "**/*.cy.js",
     env: {
       PREFLIGHT_API_KEY:

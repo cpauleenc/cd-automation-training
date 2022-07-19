@@ -8,38 +8,83 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 //
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-Cypress.Commands.add("getOtp", (contact_number, country_code) => {
-  const OTP = cy
-    .request({
-      method: "GET",
-      url:
-        "/v1/sms/retrieve-otp-codes?cellphone=" +
-        contact_number +
-        "&country_code=" +
-        country_code +
-        "&rate_limit=2",
-      headers: {
-        "otp-secret-key": "782a6798b2f0ce9a01be38af39ef34bd",
-      },
-    })
-    .then((response) => {
-      return response.body.data[0].verification_code;
-    });
+// Generate Token in kumuapi
+Cypress.Commands.add("generateToken", () => {
+  const response = cy.request({
+    method: "POST",
+    url: "https://dev-api.kumuapi.com/user/login",
+    headers: {
+      "Device-Id": "e158c2d6431ec31a",
+      "Device-Type": "ios",
+      "Version-Code": "780A",
+    },
+    body: {
+      country_code: "+63",
+      cellphone: "0000098611",
+      verification_code: "881456",
+    },
+  });
 
-  return OTP;
+  return response;
+});
+
+// Generate QR Code
+Cypress.Commands.add("generateQRCode", () => {
+  const response = cy.request({
+    method: "POST",
+    url: "https://dev-liveapi.kumu.live/site/generate-qr-code",
+    qs: {
+      "Device-Id": "608a63ad402cc",
+    },
+  });
+
+  return response;
+});
+
+// Scan QR Code
+Cypress.Commands.add("scanQRCode", (token, guid, accesskey) => {
+  const response = cy.request({
+    method: "POST",
+    url: "https://dev-api.kumuapi.com/web/site/qr-sign-in",
+    headers: {
+      "x-kumu-token": token,
+      "Device-Id": "e158c2d6431ec31a",
+      "Device-Type": "ios",
+      "Version-Code": "780A",
+      "x-kumu-userid": guid,
+      "Content-Type": "application/json",
+    },
+    body: {
+      accesskey,
+    },
+  });
+
+  return response;
+});
+
+// Login user via QR Code
+Cypress.Commands.add("loginViaQRCode", (accesskey) => {
+  const response = cy.request({
+    method: "POST",
+    url: "https://dev-liveapi.kumu.live/site/check-qr-sign-in",
+    qs: {
+      accesskey,
+    },
+  });
+
+  return response;
+});
+
+// Logout user
+Cypress.Commands.add("logOut", (auth_token) => {
+  const response = cy.request({
+    method: "POST",
+    url: "https://dev-liveapi.kumu.live/site/login-out",
+    headers: {
+      "Device-Id": "e158c2d6431ec31a",
+      "X-Kumu-Auth": auth_token,
+    },
+  });
+
+  return response;
 });
