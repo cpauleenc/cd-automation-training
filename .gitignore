@@ -1,4 +1,5 @@
-/node_modules
-/allure-results
-/videos
-/screenshots
+.DS_Store
+node_modules/
+allure-results/
+cypress/videos
+cypress/screenshots
