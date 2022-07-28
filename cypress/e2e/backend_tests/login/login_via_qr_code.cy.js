@@ -5,8 +5,6 @@ describe("Kumu Live Web - Login via QR Code", () => {
     cy.generateToken().then((response) => {
       token = response.body.data.token;
       guid = response.body.data.guid;
-      cy.log("response: " + token);
-      cy.log("response: " + guid);
     });
   });
 
