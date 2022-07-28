@@ -2,12 +2,11 @@ const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
   e2e: {
-    // setupNodeEvents(on, config) {
-    //   // implement node event listeners here
-    // },
     projectId: "",
     specPattern: "**/*.cy.js",
     env: {
+      devKumuApi: "https://dev-api.kumuapi.com",
+      devKumuLiveApi: "https://dev-liveapi-v8.kumu.live",
       PREFLIGHT_API_KEY:
         "NjU2NjJkNjItYTEyMi00NzU0LTk4MzUtM2Q1YjQ5MzE4YTE0OmI2NzU4NTNkLTk5ZWYtNDJlZC05ZjBjLWQ4MjI2NjMxYjlmOQ==",
       allureResultsPath: "allure-results",

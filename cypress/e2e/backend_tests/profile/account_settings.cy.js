@@ -1,4 +1,4 @@
-describe("Kumu Live Web - Login via QR Code", () => {
+describe("Kumu Live Web - View Profile", () => {
   let token, guid, accesskey, auth_token, channel_id;
 
   before(function () {
@@ -8,11 +8,9 @@ describe("Kumu Live Web - Login via QR Code", () => {
       cy.generateQRCode().then((response) => {
         accesskey = response.body.data.accesskey;
         cy.scanQRCode(token, guid, accesskey).then((response) => {
-          cy.log("response: ", response);
           cy.loginViaQRCode(accesskey).then((response) => {
             auth_token = response.body.data.token;
             expect(response.status).to.equal(200);
-            cy.log("response: ", response);
           });
         });
       });
@@ -28,15 +26,16 @@ describe("Kumu Live Web - Login via QR Code", () => {
         "X-Kumu-Auth": auth_token,
       },
     }).then((response) => {
-      channel_id = response.body.data.channel_id;
-      cy.log("response: ", response);
+      cy.log('response: ', response);
+      // channel_id = response.body.data.channel_id;
+      expect(response.status).to.equal(200);
     });
   });
 
   after(function () {
     cy.logOut().then((response) => {
       channel_id = response.body.data.channel_id;
-      cy.log("logout: ", response);
+      // expect(response.status).to.equal(204);
     });
   });
 });
