@@ -1,0 +1,14 @@
+{
+  "facebook": {
+    "oauth_provider": "facebook",
+    "oauth_id": "103973238771307"
+  },
+  "google": {
+    "oauth_provider": "google",
+    "oauth_id": "112792426208437278249"
+  },
+  "apple": {
+    "oauth_provider": "apple",
+    "oauth_id": "000631.00cb3c871c15486db3c5f2f60d5eee3d.0008"
+  }
+}
