@@ -79,7 +79,7 @@ Cypress.Commands.add("loginViaQRCode", (accesskey) => {
 });
 
 // User OAuth Login
-Cypress.Commands.add("OAuthLogin", () => {
+Cypress.Commands.add("OAuthLogin", (oauth_provider, oauth_id) => {
   const response = cy.request({
     method: "POST",
     url: Cypress.env('devKumuLiveApi') + "/user/oauth-login",
@@ -88,8 +88,8 @@ Cypress.Commands.add("OAuthLogin", () => {
     },
     form: true,
     body: {
-      oauth_provider: "apple",
-      oauth_id: "000631.00cb3c871c15486db3c5f2f60d5eee3d.0008"
+      oauth_provider: oauth_provider,
+      oauth_id: oauth_id
     }
   });
 
