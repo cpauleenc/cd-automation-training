@@ -78,6 +78,42 @@ Cypress.Commands.add("loginViaQRCode", (accesskey) => {
   return response;
 });
 
+// User OAuth Login
+Cypress.Commands.add("OAuthLogin", () => {
+  const response = cy.request({
+    method: "POST",
+    url: Cypress.env('devKumuLiveApi') + "/user/oauth-login",
+    headers: {
+      "Device-Id": headers.deviceId
+    },
+    form: true,
+    body: {
+      oauth_provider: "apple",
+      oauth_id: "000631.00cb3c871c15486db3c5f2f60d5eee3d.0008"
+    }
+  });
+
+  return response;
+});
+
+// User OAuth Token
+Cypress.Commands.add("OAuthToken", (user_guid, otp) => {
+  const response = cy.request({
+    method: "POST",
+    url: Cypress.env('devKumuLiveApi') + "/user/oauth-token",
+    headers: {
+      "Device-Id": headers.deviceId
+    },
+    form: true,
+    body: {
+      username: user_guid,
+      otp: otp
+    }
+  });
+
+  return response;
+});
+
 // Logout user
 Cypress.Commands.add("logOut", (auth_token) => {
   const response = cy.request({
