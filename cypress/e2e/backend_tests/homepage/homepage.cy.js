@@ -1,5 +1,5 @@
 describe("Kumu Live Web - Homepage", () => {
-  let token, guid, accesskey, auth_token, channel_id;
+  let token, guid, accesskey, auth_token;
 
   before(function () {
     cy.generateToken().then((response) => {
@@ -34,9 +34,12 @@ describe("Kumu Live Web - Homepage", () => {
       }
     }).then((response) => {
       let data = response.body.data;
+      const count = data.count;
 
-      expect(response.status).to.equal(200);
       expect(data).to.have.property('lives');
+      expect(data).to.have.property('count');
+      expect(count.lives_count).to.be.greaterThan(0);
+      assert.isObject(count, 'value is object');
       assert.isArray(data.lives, 'lives is an array')
     });
   });
@@ -59,6 +62,8 @@ describe("Kumu Live Web - Homepage", () => {
     }).then((response) => {
       let data = response.body.data;
       expect(response.status).to.equal(200);
+      expect(response.body).to.have.property('data');
+      assert.isArray(data, 'value is array');
     });
   });
 
@@ -72,15 +77,18 @@ describe("Kumu Live Web - Homepage", () => {
       },
     }).then((response) => {
       let data = response.body.data;
+      const count = data.count;
 
       expect(data).to.have.property('lives');
+      expect(data).to.have.property('count');
+      expect(count.lives_count).to.be.greaterThan(0);
+      assert.isObject(count, 'value is object');
       assert.isArray(data.lives, 'lives is an array')
     });
   });
 
   after(function () {
     cy.logOut().then((response) => {
-      channel_id = response.body.data.channel_id;
       expect(response.status).to.equal(200);
     });
   });

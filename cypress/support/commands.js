@@ -114,6 +114,21 @@ Cypress.Commands.add("OAuthToken", (user_guid, otp) => {
   return response;
 });
 
+// Get User Profile
+Cypress.Commands.add("getUserProfile", (auth_token) => {
+  const response =  cy.request({
+    method: "POST",
+    url: Cypress.env('devKumuLiveApi') + "/user/profile",
+    headers: {
+      "Device-Id": headers.deviceId,
+      "X-Kumu-Auth": auth_token,
+    }
+  });
+
+  return response;
+});
+
+
 // Logout user
 Cypress.Commands.add("logOut", (auth_token) => {
   const response = cy.request({

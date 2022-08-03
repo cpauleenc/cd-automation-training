@@ -1,5 +1,5 @@
-describe("Kumu Live Web - View Profile", () => {
-  let token, guid, accesskey, auth_token, channel_id;
+describe.only("Kumu Live Web - Account Settings", () => {
+  let token, guid, accesskey, auth_token;
 
   before(function () {
     cy.generateToken().then((response) => {
@@ -17,25 +17,33 @@ describe("Kumu Live Web - View Profile", () => {
     });
   });
 
-  it("should display Account Settings", () => {
-    cy.request({
-      method: "POST",
-      url: "https://dev-liveapi.kumu.live/user/profile",
-      headers: {
-        "Device-Id": "e158c2d6431ec31a",
-        "X-Kumu-Auth": auth_token,
-      },
-    }).then((response) => {
-      cy.log('response: ', response);
-      // channel_id = response.body.data.channel_id;
+  it("should display Account Information", () => {
+    cy.getUserProfile(auth_token).then((response) => {
+      let data = response.body.data;
+
       expect(response.status).to.equal(200);
+      assert.isObject(data, 'value is object');
+      expect(data).property('username').to.equal('test_yan_main');;
+      expect(data).to.have.property('guid').to.equal(guid);
+      expect(data).to.have.property('user_id');
+      expect(data).to.have.property('avatar'); 
+    });
+  });
+
+  it("should display Coins and Diamonds", () => {
+    cy.getUserProfile(auth_token).then((response) => {
+      let data = response.body.data;
+
+      expect(response.status).to.equal(200);
+      expect(data.guid).to.equal(guid);
+      expect(data).to.have.property('coin');
+      expect(data).to.have.property('diamond'); 
     });
   });
 
   after(function () {
     cy.logOut().then((response) => {
-      channel_id = response.body.data.channel_id;
-      // expect(response.status).to.equal(204);
+      expect(response.status).to.equal(200);
     });
   });
 });
