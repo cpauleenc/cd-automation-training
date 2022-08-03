@@ -87,9 +87,9 @@ jobs:
         PUBLISH_DIR: allure-history
       
     # Send API Automation result to Slack
-    - name: Send custom JSON data to Slack workflow
-      id: slack
-      uses: slackapi/slack-github-action@v1.18.0
+    - name: Send automation report on slack channel
+      if: always()
+      uses: rtCamp/action-slack-notify@v2.2.0
       env:
         SLACK_CHANNEL: cd-test-automation-results
         SLACK_USERNAME: CD Automation Reports
