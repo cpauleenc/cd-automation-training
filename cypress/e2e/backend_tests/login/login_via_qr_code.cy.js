@@ -1,4 +1,4 @@
-describe("Kumu Live Web - Login via QR Code", () => {
+describe("[API] Kumu Live Web - Login via QR Code", () => {
   let token, guid, accesskey, auth_token, channel_id;
 
   it("should generate KUMU token", () => {

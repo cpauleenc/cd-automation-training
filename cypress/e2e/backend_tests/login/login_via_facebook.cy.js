@@ -1,4 +1,4 @@
-describe("Kumu Live Web - Login via Facebook", () => {
+describe("[API] Kumu Live Web - Login via Facebook", () => {
   let user_guid, otp, data, fb_oauth_provider, fb_oauth_id;
 
   it("should verify Facebook account upon login", () => {

@@ -1,4 +1,4 @@
-describe("Kumu Live Web - Login via Google", () => {
+describe("[API] Kumu Live Web - Login via Google", () => {
   let user_guid, otp, data, google_oauth_provider, google_oauth_id;
 
   it("should verify Google account upon login", () => {
