@@ -58,7 +58,7 @@ jobs:
 
     # Run tests on Chrome browser
     - name: E2E on Chrome
-    steps:
+      steps:
       - uses: actions/checkout@v2
       - uses: cypress-io/github-action@v4
         with:
