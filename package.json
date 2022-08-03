@@ -4,7 +4,8 @@
   "description": "Test automation repo for Creator Distribution",
   "main": "index.js",
   "scripts": {
-    "test": "npx cypress run"
+    "test": "npx cypress run",
+    "cypress-open": "npx cypress open"
   },
   "repository": {
     "type": "git",
