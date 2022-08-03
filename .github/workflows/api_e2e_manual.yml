@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       test_file:
-        description: 'Select backend_tests or frontend_tests to test'
+        description: 'Select Backend or Frontend to test'
         required: true
         default: '*'
         type: choice
