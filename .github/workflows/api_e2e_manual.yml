@@ -1,9 +1,18 @@
 # GitHub Actions
 # https://help.github.com/en/articles/configuring-a-workflow
-name: cd-automation
+name: cd-automation-manual
 
-on: push
-
+on:
+  workflow_dispatch:
+    inputs:
+      test_file:
+        description: 'Select backend_tests or frontend_tests to test'
+        required: true
+        default: '*'
+        type: choice
+        options:
+        - backend_tests
+        - frontend_tests
 jobs:
   test1:
     name: Cypress test
@@ -59,7 +68,7 @@ jobs:
     # Run tests
     - name: Cypress run
       run: |
-        npx cypress run --env allure=true
+        npx cypress run --spec 'cypress/e2e/${{ github.event.inputs.test_file }}' --env allure=true 
       continue-on-error: false
     
     # Allure  report
