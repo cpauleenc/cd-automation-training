@@ -1,5 +1,7 @@
 .DS_Store
 node_modules/
 allure-results/
-cypress/videos
+cypress/videos/
 cypress/screenshots
+log/
+npm_install_debug.log
