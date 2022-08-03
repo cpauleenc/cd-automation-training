@@ -59,7 +59,7 @@ jobs:
     # Run tests
     - name: Cypress run
       run: |
-        npm test allure=true
+        npx cypress run --env allure=true
       continue-on-error: false
     
     # Allure  report
