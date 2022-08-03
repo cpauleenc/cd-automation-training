@@ -59,4 +59,41 @@ jobs:
     # Run tests
     - name: Cypress run
       uses: cypress-io/github-action@v4
+    
+    # Allure  report
+    - name: Get Allure history
+      if: always()
+      uses: actions/checkout@v2
+      continue-on-error: true
+      with:
+        ref: allure-reports
+        path: allure-reports
+        
+    - name: Allure reports
+      if: always()
+      uses: simple-elf/allure-report-action@master
+      with:
+        allure_results: allure-results
+        allure_history: allure-history
+        gh_pages: allure-reports
+        keep_reports: 350
+        
+    - name: Deploy report to Github Pages
+      if: always()
+      uses: peaceiris/actions-gh-pages@v2
+      env:
+        PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+        PUBLISH_BRANCH: allure-reports
+        PUBLISH_DIR: allure-history
+      
+    # Send API Automation result to Slack
+    - name: Send custom JSON data to Slack workflow
+      id: slack
+      uses: slackapi/slack-github-action@v1.18.0
+      env:
+        SLACK_CHANNEL: cd-test-automation-results
+        SLACK_USERNAME: CD Automation Reports
+        SLACK_COLOR: ${{ job.status }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
