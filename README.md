@@ -1,6 +1,6 @@
 [![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-black.svg)](https://sonarcloud.io/summary/new_code?id=kumumedia_test-automation-cd)
 
-# test-automation-cd
+# test-automation-cd [[![Action status](https://github.com/test-automation-cd/github-action/workflows/api_e2e/badge.svg?branch=master)](https://github.com/test-automation-cd/github-action/actions)
 
 ## Overview
 This is an automation repository for Creator Distribution which uses Cypress framework for both Backend(API) and Frontend(UI) web testing.
