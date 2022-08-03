@@ -104,7 +104,7 @@ jobs:
       env:
         SLACK_CHANNEL: cd-test-automation-results
         SLACK_USERNAME: CD Automation Reports
-        SLACK_MESSAGE: Please see test results here https://supreme-broccoli-33218615.pages.github.io/${{ github.run_number }}/
+        SLACK_MESSAGE: Please see test results here https://cuddly-train-dea46257.pages.github.io/${{ github.run_number }}/
         SLACK_COLOR: ${{ job.status }}
         SLACK_ICON: "https://ibb.co/GTkvpjP"
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
