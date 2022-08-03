@@ -93,7 +93,8 @@ jobs:
       env:
         SLACK_CHANNEL: cd-test-automation-results
         SLACK_USERNAME: CD Automation Reports
+        SLACK_MESSAGE: Please see test results here https://jubilant-goggles-fa899f73.pages.github.io/${{ github.run_number }}/
         SLACK_COLOR: ${{ job.status }}
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+  
 
