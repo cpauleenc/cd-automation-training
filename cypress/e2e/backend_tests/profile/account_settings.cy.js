@@ -1,4 +1,4 @@
-describe.only("Kumu Live Web - Account Settings", () => {
+describe.only("[API] Kumu Live Web - Account Settings", () => {
   let token, guid, accesskey, auth_token;
 
   before(function () {

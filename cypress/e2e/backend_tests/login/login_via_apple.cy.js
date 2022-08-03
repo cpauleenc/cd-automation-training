@@ -1,4 +1,4 @@
-describe("Kumu Live Web - Login via Apple Id", () => {
+describe("[API] Kumu Live Web - Login via Apple Id", () => {
   let user_guid, otp, data, apple_oauth_provider, apple_oauth_id;
 
   it("should verify Apple account upon login", () => {

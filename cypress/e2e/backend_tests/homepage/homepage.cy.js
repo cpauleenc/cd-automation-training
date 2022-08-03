@@ -1,4 +1,4 @@
-describe("Kumu Live Web - Homepage", () => {
+describe("[API] Kumu Live Web - Homepage", () => {
   let token, guid, accesskey, auth_token;
 
   before(function () {
