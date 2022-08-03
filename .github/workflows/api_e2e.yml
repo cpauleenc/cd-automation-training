@@ -16,7 +16,7 @@ jobs:
     - name: Use Node.js v14
       uses: actions/setup-node@v1
       with:
-        node:version: "14"
+        node-version: "14"
 
     # just so we learn about available environment variables GitHub provides
     - name: Print env variables
@@ -85,6 +85,16 @@ jobs:
         PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
         PUBLISH_BRANCH: allure-reports
         PUBLISH_DIR: allure-history
+    
+    - name: Post the link to the report
+      if: always()
+      uses: Sibz/github-status-action@v1
+      with: 
+        authToken: ${{secrets.GITHUB_TOKEN}}
+        context: 'Test report'
+        state: 'success'
+        sha: ${{ github.event.pull_request.head.sha }}
+        target_url: simple-elf.github.io/github-allure-history/${{ github.run_number }}
       
     # Send API Automation result to Slack
     - name: Send automation report on slack channel
@@ -93,8 +103,9 @@ jobs:
       env:
         SLACK_CHANNEL: cd-test-automation-results
         SLACK_USERNAME: CD Automation Reports
-        SLACK_MESSAGE: Please see test results here https://jubilant-goggles-fa899f73.pages.github.io/${{ github.run_number }}/
+        SLACK_MESSAGE: Please see test results here simple-elf.github.io/github-allure-history/${{ github.run_number }}
         SLACK_COLOR: ${{ job.status }}
+        SLACK_ICON: "https://s3-us-west-2.amazonaws.com/slack-files2/avatars/2021-05-24/2088753217862_9d1c9e6071bb03110fdf_72.jpg"
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
   
 
