@@ -1,6 +1,6 @@
-# test-automation-cd
+# Cretor Distribution Automation Project
 
-[![CD Automation Test Result](https://github.com/kumumedia/test-automation-cd/workflows/cd-automation/badge.svg?branch=master)](.github/workflows/api_e2e.yml)
+[![CD Automation Test Result](https://github.com/kumumedia/test-automation-cd/workflows/cd-automation-manual/badge.svg?branch=master)](.github/workflows/api_e2e_manual.yml) [![CD Automation Build](https://github.com/kumumedia/test-automation-cd/workflows/Build/badge.svg?branch=master)](.github/workflows/build.yml)
 
 ## Overview
 This is an automation repository for Creator Distribution which uses Cypress framework for both Backend(API) and Frontend(UI) web testing.
