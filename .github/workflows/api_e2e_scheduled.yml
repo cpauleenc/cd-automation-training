@@ -1,18 +1,12 @@
 # GitHub Actions
 # https://help.github.com/en/articles/configuring-a-workflow
-name: cd-automation-manual
+name: cd-automation-scheduled
 
 on:
-  workflow_dispatch:
-    inputs:
-      test_file:
-        description: 'Select backend_tests or frontend_tests to test'
-        required: true
-        default: '*'
-        type: choice
-        options:
-        - backend_tests
-        - frontend_tests
+  schedule:
+    # Run test Sun-Fri every 7am
+    - cron: '0 23 * * SUN-FRI'
+
 jobs:
   test1:
     name: Cypress test
