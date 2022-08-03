@@ -25,7 +25,7 @@ describe("[API] Kumu Live Web - Login via Apple Id", () => {
     });
   });
 
-  it("should generate OAuth token via Facebook", () => {
+  it("should generate OAuth token via Apple", () => {
     cy.OAuthToken(user_guid, otp).then((response) => {
       data = response.body.data;
       expect(response.status).to.equal(200);

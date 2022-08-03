@@ -62,7 +62,7 @@ jobs:
     # Run tests
     - name: Cypress run
       run: |
-        npx cypress run --spec 'cypress/e2e/${{ github.event.inputs.test_file }}' --env allure=true 
+        npx cypress --env allure=true 
       continue-on-error: false
     
     # Allure  report
