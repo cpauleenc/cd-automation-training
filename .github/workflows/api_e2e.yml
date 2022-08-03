@@ -56,6 +56,10 @@ jobs:
         npx cypress version --component electron
         npx cypress version --component node
 
-    # Run tests
-    - name: Cypress run
-      uses: cypress-io/github-action@v2
+    # Run tests on Chrome browser
+    name: E2E on Chrome
+    steps:
+      - uses: actions/checkout@v2
+      - uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
