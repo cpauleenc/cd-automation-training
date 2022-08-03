@@ -57,8 +57,6 @@ jobs:
         npx cypress version --component node
 
     # Run tests
-    - name: Checkout
-      uses: cypress-io/github-action@v2
     - name: Cypress run
       uses: cypress-io/github-action@v4
 
