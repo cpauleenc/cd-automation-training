@@ -4,8 +4,10 @@
   "description": "Test automation repo for Creator Distribution",
   "main": "index.js",
   "scripts": {
-    "test": "npx cypress run",
-    "cypress-open": "npx cypress open"
+    "test": "npx cypress run --env allure=true",
+    "cypress-open": "npx cypress open",
+    "backend-test": "npx cypress run --spec 'cypress/e2e/backend_tests' --env allure=true",
+    "frontend-test": "npx cypress run --spec 'cypress/e2e/frontend_tests' --env allure=true"
   },
   "repository": {
     "type": "git",

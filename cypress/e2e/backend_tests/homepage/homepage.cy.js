@@ -1,5 +1,5 @@
 describe("[API] Kumu Live Web - Homepage", () => {
-  let token, guid, accesskey, auth_token;
+  let token, guid, accesskey, auth_token, deviceId;
 
   before(function () {
     cy.generateToken().then((response) => {
@@ -15,6 +15,9 @@ describe("[API] Kumu Live Web - Homepage", () => {
         });
       });
     });
+    cy.getHeaders().then((response) => {
+      deviceId = response.deviceId
+    });
   });
 
   it("should display Livestream list", () => {
@@ -22,7 +25,7 @@ describe("[API] Kumu Live Web - Homepage", () => {
       method: "POST",
       url: "https://dev-liveapi-v8.kumu.live/site/get-live",
       headers: {
-        "Device-Id": cy.getHeaders().deviceId,
+        "Device-Id": deviceId,
         "X-Kumu-Auth": auth_token,
       },
       qs: {
@@ -49,7 +52,7 @@ describe("[API] Kumu Live Web - Homepage", () => {
       method: "POST",
       url: "https://dev-liveapi-v8.kumu.live/site/get-shop-live-data",
       headers: {
-        "Device-Id": cy.getHeaders().deviceId,
+        "Device-Id": deviceId,
         "X-Kumu-Auth": auth_token,
       },
       qs: {
@@ -72,7 +75,7 @@ describe("[API] Kumu Live Web - Homepage", () => {
       method: "POST",
       url: "https://dev-liveapi-v8.kumu.live/site/get-browse-live",
       headers: {
-        "Device-Id": cy.getHeaders().deviceId,
+        "Device-Id": deviceId,
         "X-Kumu-Auth": auth_token,
       },
     }).then((response) => {
