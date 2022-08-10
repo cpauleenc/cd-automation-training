@@ -7,7 +7,7 @@ describe.only('[API] Kumu Live Web - Account Settings', () => {
   4. Display Account Diamonds and Coins
   */
 
-  let token, guid, accesskey, auth_token, username;
+  let token, guid, accesskey, auth_token, users;
 
   before(function () {
     cy.generateToken().then((response) => {
@@ -23,8 +23,8 @@ describe.only('[API] Kumu Live Web - Account Settings', () => {
         });
       });
     });
-    cy.getHeaders().then((response) => {
-      username = response.username;
+    cy.getUsers().then((response) => {
+      users = response;
     });
   });
 
@@ -42,7 +42,8 @@ describe.only('[API] Kumu Live Web - Account Settings', () => {
   });
 
   it('should display Coins and Diamonds', () => {
-    cy.getUserProfile(auth_token).then((response) => {
+    const username = users[0].username;
+    cy.getUserProfile(auth_token, username).then((response) => {
       let data = response.body.data;
 
       expect(response.status).to.equal(200);

@@ -236,13 +236,51 @@ Cypress.Commands.add('getBrowseLivestreams', (auth_token) => {
   })
 })
 
+// Get Gift List 
+Cypress.Commands.add('getGiftList', (auth_token, category) => {
+  return cy.request({
+    method: 'POST',
+    url: Cypress.env('devKumuLiveApi') + '/live/gift-list',
+    headers: {
+      'Device-Id': headers[0].deviceId,
+      'X-Kumu-Auth': auth_token,
+    },
+    form: true,
+    body: {
+      'category': category
+    }
+  });
+});
+
+// Send Gift
+Cypress.Commands.add('sendGift', (auth_token, user_details) => {
+  cy.log('user_details', user_details)
+  return cy.request({
+    method: 'POST',
+    url: Cypress.env('devKumuLiveApi') + '/live/present',
+    headers: {
+      'Device-Id': headers[0].deviceId,
+      'X-Kumu-Auth': auth_token,
+    },
+    form: true,
+    body: {
+      'category': 'vote',
+      'gift_id': user_details.gift_id,
+      'gift_trace_id': 'ngWxloU7ZFmRR4JsHMHauiA5NWs2TMat',
+      'channel_id': user_details.channel_id,
+      'host_id': user_details.user_id,
+      'repeat': '1'
+    }
+  });
+});
+
 // Logout user
 Cypress.Commands.add('logOut', (auth_token) => {
   return cy.request({
     method: 'POST',
     url: Cypress.env('devKumuLiveApi') + '/site/login-out',
     headers: {
-      'Device-Id': headers.deviceId,
+      'Device-Id': headers[0].deviceId,
       'X-Kumu-Auth': auth_token,
     },
   });
