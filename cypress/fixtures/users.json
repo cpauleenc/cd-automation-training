@@ -1,3 +1,22 @@
-{
-  "username": "test_yan_main"
-}
+[
+  {
+    "username": "test_yan_main",
+    "dev_magic_code": 881456,
+    "prod_magic_code": 543580
+  },
+  {
+    "username": "test_yan_alt",
+    "dev_magic_code": 869145,
+    "prod_magic_code": 278555
+  },
+  {
+    "username": "testuser123",
+    "dev_magic_code": null,
+    "prod_magic_code": null
+  },
+  {
+    "username": "testip61_testip61_",
+    "dev_magic_code": null,
+    "prod_magic_code": null
+  }
+]

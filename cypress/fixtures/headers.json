@@ -1,5 +1,12 @@
-{
-  "deviceId": "e158c2d6431ec31a",
-  "deviceType": "ios",
-  "versionCode": "780A"
-}
+[
+  {
+    "deviceId": "e158c2d6431ec31a",
+    "deviceType": "ios",
+    "versionCode": "780A"
+  },
+  {
+    "deviceId": "l6gbbbzq",
+    "deviceType": "web",
+    "versionCode": "999999"
+  }  
+]

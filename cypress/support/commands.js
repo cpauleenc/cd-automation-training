@@ -17,15 +17,48 @@ Cypress.Commands.add('getUsers', () => {
   return users;
 });
 
+// Send verification sms
+Cypress.Commands.add('sendVerifySms', () => {
+  return cy.request({
+    method: 'POST',
+    url: Cypress.env('devKumuLiveApi') + '/user/oauth-send-verify-sms',
+    headers: {
+      'Device-Id': headers[1].deviceId,
+      'Device-Type': headers[1].deviceType,
+      'Version-Code': headers[1].versionCode,
+    },
+    form: true,
+    body: {
+      username: users[0].username
+    },
+  });
+});
+
+// Generate User OAuth Token
+Cypress.Commands.add('generateUserOAuthToken', () => {
+  return cy.request({
+    method: 'POST',
+    url: Cypress.env('devKumuLiveApi') + '/user/oauth-token',
+    headers: {
+      'Device-Id': 'l6gbbbzq',
+    },
+    form: true,
+    body: {
+      username: users[0].username,
+      otp: 881456
+    },
+  });
+});
+
 // Generate Token in kumuapi
 Cypress.Commands.add('generateToken', () => {
   return cy.request({
     method: 'POST',
     url: Cypress.env('devKumuApi') + '/user/login',
     headers: {
-      'Device-Id': headers.deviceId,
-      'Device-Type': headers.deviceType,
-      'Version-Code': headers.versionCode,
+      'Device-Id': headers[0].deviceId,
+      'Device-Type': headers[0].deviceType,
+      'Version-Code': headers[0].versionCode,
     },
     body: {
       country_code: '+63',
@@ -41,7 +74,7 @@ Cypress.Commands.add('generateQRCode', () => {
     method: 'POST',
     url: Cypress.env('devKumuLiveApi') + '/site/generate-qr-code',
     qs: {
-      'Device-Id': headers.deviceId,
+      'Device-Id': headers[0].deviceId,
     },
   });
 });
@@ -53,9 +86,9 @@ Cypress.Commands.add('scanQRCode', (token, guid, accesskey) => {
     url: Cypress.env('devKumuApi') + '/web/site/qr-sign-in',
     headers: {
       'x-kumu-token': token,
-      'Device-Id': headers.deviceId,
-      'Device-Type': headers.deviceType,
-      'Version-Code': headers.versionCode,
+      'Device-Id': headers[0].deviceId,
+      'Device-Type': headers[0].deviceType,
+      'Version-Code': headers[0].versionCode,
       'x-kumu-userid': guid,
       'Content-Type': 'application/json',
     },
@@ -82,7 +115,7 @@ Cypress.Commands.add('OAuthLogin', (oauth_provider, oauth_id) => {
     method: 'POST',
     url: Cypress.env('devKumuLiveApi') + '/user/oauth-login',
     headers: {
-      'Device-Id': headers.deviceId
+      'Device-Id': headers[0].deviceId
     },
     form: true,
     body: {
@@ -98,7 +131,7 @@ Cypress.Commands.add('OAuthToken', (user_guid, otp) => {
     method: 'POST',
     url: Cypress.env('devKumuLiveApi') + '/user/oauth-token',
     headers: {
-      'Device-Id': headers.deviceId
+      'Device-Id': headers[0].deviceId
     },
     form: true,
     body: {
@@ -114,7 +147,7 @@ Cypress.Commands.add('getUserProfile', (auth_token, username) => {
     method: 'POST',
     url: Cypress.env('devKumuLiveApi') + '/user/profile',
     headers: {
-      'Device-Id': headers.deviceId,
+      'Device-Id': headers[0].deviceId,
       'X-Kumu-Auth': auth_token,
     },
     form: true,
@@ -125,12 +158,12 @@ Cypress.Commands.add('getUserProfile', (auth_token, username) => {
 });
 
 // Follow or Unfollow
-Cypress.Commands.add('follow', (deviceId, auth_token, action, influencer_id) => {
+Cypress.Commands.add('follow', (auth_token, action, influencer_id) => {
   return cy.request({
     method: 'POST',
     url: Cypress.env('devKumuLiveApi') + '/user/follow',
     headers: {
-      'Device-Id': deviceId,
+      'Device-Id': headers[0].deviceId,
       'X-Kumu-Auth': auth_token,
     },
     form: true,
@@ -142,12 +175,12 @@ Cypress.Commands.add('follow', (deviceId, auth_token, action, influencer_id) => 
 })
 
 // Display List of Livestreams
-Cypress.Commands.add('getAllLivestreams', (deviceId, auth_token) => {
+Cypress.Commands.add('getAllLivestreams', (auth_token) => {
   return cy.request({
     method: 'POST',
     url: Cypress.env('devKumuLiveApi') + '/site/get-live',
     headers: {
-      'Device-Id': deviceId,
+      'Device-Id': headers[0].deviceId,
       'X-Kumu-Auth': auth_token,
     },
     qs: {
@@ -161,12 +194,12 @@ Cypress.Commands.add('getAllLivestreams', (deviceId, auth_token) => {
 })
 
 // Display List of Shops
-Cypress.Commands.add('getAllShops', (deviceId, auth_token) => {
+Cypress.Commands.add('getAllShops', (auth_token) => {
   return cy.request({
     method: 'POST',
     url: Cypress.env('devKumuLiveApi') + '/site/get-shop-live-data',
     headers: {
-      'Device-Id': deviceId,
+      'Device-Id': headers[0].deviceId,
       'X-Kumu-Auth': auth_token,
     },
     qs: {
@@ -180,24 +213,24 @@ Cypress.Commands.add('getAllShops', (deviceId, auth_token) => {
 })
 
 // Display List of Popular Channels
-Cypress.Commands.add('getAllPopularChannels', (deviceId) => {
+Cypress.Commands.add('getAllPopularChannels', () => {
   return cy.request({
     method: 'POST',
     url: Cypress.env('devKumuLiveApi') + '/live/recommend',
     headers: {
-      'Device-Id': deviceId,
+      'Device-Id': headers[0].deviceId,
       'X-Kumu-Auth': 'undefined',
     }
   })
 })
 
 // Display List of Livestreams via Browse tab
-Cypress.Commands.add('getBrowseLivestreams', (deviceId, auth_token) => {
+Cypress.Commands.add('getBrowseLivestreams', (auth_token) => {
   return cy.request({
     method: 'POST',
     url: Cypress.env('devKumuLiveApi') + '/site/get-browse-live',
     headers: {
-      'Device-Id': deviceId,
+      'Device-Id': headers[0].deviceId,
       'X-Kumu-Auth': auth_token,
     },
   })

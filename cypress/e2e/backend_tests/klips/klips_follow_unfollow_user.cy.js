@@ -9,7 +9,7 @@ describe('[API] Kumu Live Web - Klips > Follow or Unfollow Streamer', () => {
   6. Unfollow a streamer in a klip
   */
  
-  let token, guid, accesskey, auth_token, deviceId,
+  let token, guid, accesskey, auth_token, devices, users,
       streamer_influencer_id, streamer_follower_number, action;
 
   before(function () {
@@ -27,17 +27,22 @@ describe('[API] Kumu Live Web - Klips > Follow or Unfollow Streamer', () => {
       });
     });
     cy.getHeaders().then((response) => {
-      deviceId = response.deviceId;
+      devices = response;
+    });
+    cy.getUsers().then((response) => {
+      cy.log('users: ', response);
+      users = response;
     });
   });
 
   //Klip Tags
   it('should display klips list', () => {
+    cy.log('devices: ', devices)
     cy.request({
       method: 'POST',
       url: Cypress.env('devKumuLiveApi') + '/feed/tags',
       headers: {
-        'Device-Id': deviceId,
+        'Device-Id': devices[0].deviceId,
       },
       form: true,
       body: {
@@ -62,7 +67,7 @@ describe('[API] Kumu Live Web - Klips > Follow or Unfollow Streamer', () => {
       method: 'POST',
       url: Cypress.env('devKumuLiveApi') + '/feed/peek',
       headers: {
-        'Device-Id': deviceId,
+        'Device-Id': devices[0].deviceId,
       },
       form: true,
       body: {
@@ -90,7 +95,7 @@ describe('[API] Kumu Live Web - Klips > Follow or Unfollow Streamer', () => {
 
   //Display streamer profile
   it('should display streamers profile details', () => {
-    const username = 'testip61_testip61_'
+    const username = users[3].username;
 
     cy.getUserProfile(auth_token, username).then((response) => {
       let data = response.body.data;
@@ -102,17 +107,18 @@ describe('[API] Kumu Live Web - Klips > Follow or Unfollow Streamer', () => {
 
   it('should follow a steamer', () => {
     action = 0;
-    cy.follow(deviceId, auth_token, action, streamer_influencer_id).then((response) => {
+    cy.follow(auth_token, action, streamer_influencer_id).then((response) => {
       streamer_follower_number = response.body.data.follower_number;
+      const curr_streamer_follower_number = streamer_follower_number;
       action = 1;
 
-      cy.follow(deviceId, auth_token, action, streamer_influencer_id)
+      cy.follow(auth_token, action, streamer_influencer_id)
         .then((response) => {
           let data = response.body.data;
           const follower_number = data.follower_number;
           expect(response.status).to.eq(200);
           expect(data).property('follower_number');
-          expect(follower_number).to.be.greaterThan(streamer_follower_number);
+          expect(follower_number).to.be.greaterThan(curr_streamer_follower_number);
           expect(data).property('guid').to.eq(streamer_influencer_id);
           expect(data).property('nickname').to.eq('testios_021');
         });
@@ -121,7 +127,7 @@ describe('[API] Kumu Live Web - Klips > Follow or Unfollow Streamer', () => {
 
   it('should unfollow a streamer', () => {
     action = 0;
-    cy.follow(deviceId, auth_token, action, streamer_influencer_id).then((response) => {
+    cy.follow(auth_token, action, streamer_influencer_id).then((response) => {
       let data = response.body.data;
       const follower_number = data.follower_number;
 

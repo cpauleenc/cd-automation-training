@@ -30,7 +30,7 @@ describe('[API] Kumu Live Web - Homepage', () => {
   });
 
   it('should display Livestream list', () => {
-    cy.getAllLivestreams(deviceId, auth_token).then((response) => {
+    cy.getAllLivestreams(auth_token).then((response) => {
       let data = response.body.data;
       const count = data.count;
 
@@ -43,7 +43,7 @@ describe('[API] Kumu Live Web - Homepage', () => {
   });
 
   it('should display Shop list', () => {
-    cy.getAllShops(deviceId, auth_token).then((response) => {
+    cy.getAllShops(auth_token).then((response) => {
       let data = response.body.data;
 
       expect(response.status).to.equal(200);
@@ -53,7 +53,7 @@ describe('[API] Kumu Live Web - Homepage', () => {
   });
 
   it('should display Popular Channels list', () => {
-    cy.getAllPopularChannels(deviceId).then((response) => {
+    cy.getAllPopularChannels().then((response) => {
       let data = response.body.data;
       const count = data.count;
 
@@ -66,7 +66,7 @@ describe('[API] Kumu Live Web - Homepage', () => {
   });
 
   it('should display the list of livestream upon clicking the Browse button', () => {
-    cy.getBrowseLivestreams(deviceId, auth_token).then((response) => {
+    cy.getBrowseLivestreams(auth_token).then((response) => {
       let data = response.body.data;
       const count = data.count;
 
