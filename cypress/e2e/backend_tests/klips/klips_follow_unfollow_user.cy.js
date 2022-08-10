@@ -3,11 +3,14 @@ describe('[API] Kumu Live Web - Klips > Follow or Unfollow Streamer', () => {
   Scenarios:
   1. Login user
   2. Display klip page/list
-  3. Follow klip user
-  4. Follow klip user
+  3. View specific klip
+  4. View a streamer's profile
+  5. Follow a streamer in a klip
+  6. Unfollow a streamer in a klip
   */
  
-  let token, guid, accesskey, auth_token, deviceId, streamer_influencer_id, steamer_follower_number;
+  let token, guid, accesskey, auth_token, deviceId,
+      streamer_influencer_id, streamer_follower_number, action;
 
   before(function () {
     cy.generateToken().then((response) => {
@@ -32,7 +35,7 @@ describe('[API] Kumu Live Web - Klips > Follow or Unfollow Streamer', () => {
   it('should display klips list', () => {
     cy.request({
       method: 'POST',
-      url: 'https://dev-liveapi-v8.kumu.live/feed/tags',
+      url: Cypress.env('devKumuLiveApi') + '/feed/tags',
       headers: {
         'Device-Id': deviceId,
       },
@@ -43,7 +46,6 @@ describe('[API] Kumu Live Web - Klips > Follow or Unfollow Streamer', () => {
       }
     }).then((response) => {
       let data = response.body.data;
-      const count = data.count;
 
       expect(response.status).to.equal(200);
       expect(data).to.have.property('list');
@@ -58,7 +60,7 @@ describe('[API] Kumu Live Web - Klips > Follow or Unfollow Streamer', () => {
   it('should display specific klip details', () => {
     cy.request({
       method: 'POST',
-      url: 'https://dev-liveapi-v8.kumu.live/feed/peek',
+      url: Cypress.env('devKumuLiveApi') + '/feed/peek',
       headers: {
         'Device-Id': deviceId,
       },
@@ -72,7 +74,6 @@ describe('[API] Kumu Live Web - Klips > Follow or Unfollow Streamer', () => {
       }
     }).then((response) => {
       let data = response.body.data;
-      const count = data.count;
       
       expect(response.status).to.equal(200);
       expect(data).to.have.property('list');
@@ -89,90 +90,45 @@ describe('[API] Kumu Live Web - Klips > Follow or Unfollow Streamer', () => {
 
   //Display streamer profile
   it('should display streamers profile details', () => {
-    cy.request({
-      method: 'POST',
-      url: Cypress.env('devKumuLiveApi') + '/user/profile',
-      headers: {
-        'Device-Id': deviceId,
-        'X-Kumu-Auth': auth_token,
-      },
-      form: true,
-      body: {
-        username: 'testip61_testip61_',
-      }
-    }).then((response) => {
+    const username = 'testip61_testip61_'
+
+    cy.getUserProfile(auth_token, username).then((response) => {
       let data = response.body.data;
       streamer_influencer_id = data.guid;
+
+      expect(response.status).to.eq(200);
     });
   });
 
   it('should follow a steamer', () => {
-    cy.request({
-      method: 'POST',
-      url: Cypress.env('devKumuLiveApi') + '/user/follow',
-      headers: {
-        'Device-Id': deviceId,
-        'X-Kumu-Auth': auth_token,
-      },
-      form: true,
-      body: {
-        // username = testip61_testip61_
-        influencer_id: streamer_influencer_id,
-        // unfollow
-        action: 0
-      }
-    }).then((response) => {
+    action = 0;
+    cy.follow(deviceId, auth_token, action, streamer_influencer_id).then((response) => {
+      streamer_follower_number = response.body.data.follower_number;
+      action = 1;
 
-      steamer_follower_number = response.body.data.follower_number;
-      const curr_steamer_follower_number = steamer_follower_number;
-      cy.request({
-        method: 'POST',
-        url: Cypress.env('devKumuLiveApi') + '/user/follow',
-        headers: {
-          'Device-Id': deviceId,
-          'X-Kumu-Auth': auth_token,
-        },
-        form: true,
-        body: {
-          // username = testip61_testip61_
-          influencer_id: streamer_influencer_id,
-          // follow
-          action: 1
-        }
-      }).then((response) => {
-        let data = response.body.data;
-        const follower_number = data.follower_number;
-        expect(response.status).to.eq(200)
-        expect(data).property('follower_number');
-        expect(follower_number).to.be.greaterThan(curr_steamer_follower_number);
-        expect(data).property('guid').to.eq(streamer_influencer_id);
-        expect(data).property('nickname').to.eq('testios_021');
-      });
+      cy.follow(deviceId, auth_token, action, streamer_influencer_id)
+        .then((response) => {
+          let data = response.body.data;
+          const follower_number = data.follower_number;
+          expect(response.status).to.eq(200);
+          expect(data).property('follower_number');
+          expect(follower_number).to.be.greaterThan(streamer_follower_number);
+          expect(data).property('guid').to.eq(streamer_influencer_id);
+          expect(data).property('nickname').to.eq('testios_021');
+        });
     });
   });
 
   it('should unfollow a streamer', () => {
-    cy.request({
-      method: 'POST',
-      url: Cypress.env('devKumuLiveApi') + '/user/follow',
-      headers: {
-        'Device-Id': deviceId,
-        'X-Kumu-Auth': auth_token,
-      },
-      form: true,
-      body: {
-        // username = testip61_testip61_
-        influencer_id: streamer_influencer_id,
-        // unfollow
-        action: 0
-      }
-    }).then((response) => {
+    action = 0;
+    cy.follow(deviceId, auth_token, action, streamer_influencer_id).then((response) => {
       let data = response.body.data;
       const follower_number = data.follower_number;
+
       expect(response.status).to.eq(200);
       expect(data).property('follower_number');
       expect(data).property('guid').to.eq(streamer_influencer_id);
-      expect(follower_number).to.eq(steamer_follower_number);
+      expect(follower_number).to.eq(streamer_follower_number);
       expect(data).property('nickname').to.eq('testios_021');
     })
   })

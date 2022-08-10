@@ -1,31 +1,32 @@
-describe("[API] Kumu Live Web - Login via QR Code", () => {
-  let token, guid, accesskey, auth_token, channel_id;
+describe('[API] Kumu Live Web - Login via QR Code', () => {
+  let token, guid, accesskey;
 
-  it("should generate KUMU token", () => {
+  it('should generate KUMU token', () => {
     cy.generateToken().then((response) => {
       token = response.body.data.token;
       guid = response.body.data.guid;
     });
   });
 
-  it("should generate QR Code", () => {
+  it('should generate QR Code', () => {
     cy.generateQRCode().then((response) => {
       accesskey = response.body.data.accesskey;
-      cy.log("response: ", response);
-    });
-  });
-
-  it("should scan the QR Code", () => {
-    cy.scanQRCode(token, guid, accesskey).then((response) => {
-      cy.log("response: ", response);
-    });
-  });
-
-  it("should logged in via QR Code", () => {
-    cy.loginViaQRCode(accesskey).then((response) => {
-      auth_token = response.body.data.token;
       expect(response.status).to.equal(200);
-      cy.log("response: ", response);
+    });
+  });
+
+  it('should scan the QR Code', () => {
+    cy.scanQRCode(token, guid, accesskey).then((response) => {
+      expect(response.status).to.equal(200);
+    });
+  });
+
+  it('should logged in via QR Code', () => {
+    cy.loginViaQRCode(accesskey).then((response) => {
+      const auth_token = response.body.data.token;
+      expect(data).to.have.property('access_token');
+      expect(response.status).to.equal(200);
+      expect(auth_token).not.to.be.empty
     });
   });
 });
