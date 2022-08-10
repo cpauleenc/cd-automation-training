@@ -28,7 +28,7 @@ describe('[API] Kumu Live Web - Login via QR Code', () => {
 
       expect(data).to.have.property('token');
       expect(response.status).to.equal(200);
-      expect(auth_token).not.to.be.empty
+      expect(auth_token).not.to.be.empty;
     });
   });
 });

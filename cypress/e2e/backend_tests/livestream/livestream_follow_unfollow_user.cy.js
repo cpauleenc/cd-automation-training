@@ -9,7 +9,7 @@ describe("API] Kumu Live Web - Livestream > Follow or Unfollow Streamer", () => 
   */
 
   let token, guid, accesskey, auth_token, streamer_influencer_id,
-      deviceId, steamer_follower_number, action;
+      steamer_follower_number, action, users;
 
   before(function () {
     cy.generateToken().then((response) => {
@@ -25,13 +25,13 @@ describe("API] Kumu Live Web - Livestream > Follow or Unfollow Streamer", () => 
         });
       });
     });
-    cy.getHeaders().then((response) => {
-      deviceId = response.deviceId;
+    cy.getUsers().then((response) => {
+      users = response;
     });
   });
 
   it("should display streamer's profile details", () => {
-    const username = 'testuser123';
+    const username = users[2].username;
     cy.getUserProfile(auth_token, username).then((response) => {
       let data = response.body.data;
       streamer_influencer_id = data.guid;
@@ -40,12 +40,12 @@ describe("API] Kumu Live Web - Livestream > Follow or Unfollow Streamer", () => 
 
   it("should follow a steamer", () => {
     action = 0;
-    cy.follow(deviceId, auth_token, action, streamer_influencer_id).then((response) => {
+    cy.follow(auth_token, action, streamer_influencer_id).then((response) => {
       steamer_follower_number = response.body.data.follower_number;
       const curr_steamer_follower_number = steamer_follower_number;
       action = 1;
 
-      cy.follow(deviceId, auth_token, action, streamer_influencer_id).then((response) => {
+      cy.follow(auth_token, action, streamer_influencer_id).then((response) => {
         let data = response.body.data;
         const follower_number = data.follower_number;
         expect(response.status).to.eq(200);
@@ -59,7 +59,7 @@ describe("API] Kumu Live Web - Livestream > Follow or Unfollow Streamer", () => 
 
   it("should unfollow a streamer", () => {
     action = 0;
-    cy.follow(deviceId, auth_token, action, streamer_influencer_id).then((response) => {
+    cy.follow(auth_token, action, streamer_influencer_id).then((response) => {
       let data = response.body.data;
       const follower_number = data.follower_number;
       expect(response.status).to.eq(200);
