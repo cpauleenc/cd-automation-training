@@ -24,6 +24,8 @@ describe('[API] Kumu Live Web - Login via QR Code', () => {
   it('should logged in via QR Code', () => {
     cy.loginViaQRCode(accesskey).then((response) => {
       const auth_token = response.body.data.token;
+      const data = response.body.data;
+
       expect(data).to.have.property('access_token');
       expect(response.status).to.equal(200);
       expect(auth_token).not.to.be.empty
