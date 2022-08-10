@@ -1,4 +1,13 @@
-describe("[API] Kumu Live Web - Homepage", () => {
+describe('[API] Kumu Live Web - Homepage', () => {
+  /*
+  Scenarios:
+  1. Login user
+  2. Display list of livestreams
+  3. Display list of Shops
+  4. Display list of Klips
+  5. Display Popular Channels
+  */
+
   let token, guid, accesskey, auth_token, deviceId;
 
   before(function () {
@@ -20,22 +29,8 @@ describe("[API] Kumu Live Web - Homepage", () => {
     });
   });
 
-  it("should display Livestream list", () => {
-    cy.request({
-      method: "POST",
-      url: "https://dev-liveapi-v8.kumu.live/site/get-live",
-      headers: {
-        "Device-Id": deviceId,
-        "X-Kumu-Auth": auth_token,
-      },
-      qs: {
-        mode: 'all',
-        page: 1,
-        size: 18,
-        prev_ids: '',
-        page_size: 18
-      }
-    }).then((response) => {
+  it('should display Livestream list', () => {
+    cy.getAllLivestreams(deviceId, auth_token).then((response) => {
       let data = response.body.data;
       const count = data.count;
 
@@ -47,38 +42,31 @@ describe("[API] Kumu Live Web - Homepage", () => {
     });
   });
 
-  it("should display Shop list", () => {
-    cy.request({
-      method: "POST",
-      url: "https://dev-liveapi-v8.kumu.live/site/get-shop-live-data",
-      headers: {
-        "Device-Id": deviceId,
-        "X-Kumu-Auth": auth_token,
-      },
-      qs: {
-        mode: 'all',
-        page: 1,
-        size: 18,
-        prev_ids: '',
-        page_size: 18
-      }
-    }).then((response) => {
+  it('should display Shop list', () => {
+    cy.getAllShops(deviceId, auth_token).then((response) => {
       let data = response.body.data;
+
       expect(response.status).to.equal(200);
       expect(response.body).to.have.property('data');
       assert.isArray(data, 'value is array');
     });
   });
 
-  it("should display the list of livestream upon clicking the Browse button", () => {
-    cy.request({
-      method: "POST",
-      url: "https://dev-liveapi-v8.kumu.live/site/get-browse-live",
-      headers: {
-        "Device-Id": deviceId,
-        "X-Kumu-Auth": auth_token,
-      },
-    }).then((response) => {
+  it('should display Popular Channels list', () => {
+    cy.getAllPopularChannels(deviceId).then((response) => {
+      let data = response.body.data;
+      const count = data.count;
+
+      expect(data).to.have.property('list');
+      expect(data).to.have.property('page').to.equal(1);
+      expect(data).to.have.property('count');
+      expect(count).to.be.greaterThan(0);
+      assert.isArray(data.list, 'list is an array')
+    });
+  });
+
+  it('should display the list of livestream upon clicking the Browse button', () => {
+    cy.getBrowseLivestreams(deviceId, auth_token).then((response) => {
       let data = response.body.data;
       const count = data.count;
 

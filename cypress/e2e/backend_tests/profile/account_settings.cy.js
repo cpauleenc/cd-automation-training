@@ -1,5 +1,13 @@
-describe.only("[API] Kumu Live Web - Account Settings", () => {
-  let token, guid, accesskey, auth_token;
+describe.only('[API] Kumu Live Web - Account Settings', () => {
+   /*
+  Scenarios:
+  1. Login user
+  2. Display Profile Account Settings
+  3. Display Account Information
+  4. Display Account Diamonds and Coins
+  */
+
+  let token, guid, accesskey, auth_token, username;
 
   before(function () {
     cy.generateToken().then((response) => {
@@ -15,22 +23,25 @@ describe.only("[API] Kumu Live Web - Account Settings", () => {
         });
       });
     });
+    cy.getHeaders().then((response) => {
+      username = response.username;
+    });
   });
 
-  it("should display Account Information", () => {
-    cy.getUserProfile(auth_token).then((response) => {
+  it('should display Account Information', () => {
+    cy.getUserProfile(auth_token, username).then((response) => {
       let data = response.body.data;
 
       expect(response.status).to.equal(200);
       assert.isObject(data, 'value is object');
-      expect(data).property('username').to.equal('test_yan_main');;
+      expect(data).property('username').to.equal('test_yan_main');
       expect(data).to.have.property('guid').to.equal(guid);
       expect(data).to.have.property('user_id');
       expect(data).to.have.property('avatar'); 
     });
   });
 
-  it("should display Coins and Diamonds", () => {
+  it('should display Coins and Diamonds', () => {
     cy.getUserProfile(auth_token).then((response) => {
       let data = response.body.data;
 
